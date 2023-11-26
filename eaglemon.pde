@@ -19,7 +19,7 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-int app_ver = 2023110601;
+int app_ver = 20231107;
 
 import processing.serial.*;
 import java.nio.*;
@@ -114,6 +114,17 @@ String TG2="";
 String TG3="";
 String TG4="";
 String TG5="";
+String TG6="";
+String TG7="";
+String TG8="";
+String TG9="";
+String TG10="";
+String TG11="";
+String TG12="";
+String TG13="";
+String TG14="";
+String TG15="";
+String TG16="";
 String TG_old="";
 String TG_active="";
 
@@ -127,7 +138,8 @@ udp_send udpsend =null;
 ///////////////////////////////////////////////////////////////////////////////////
 void setup()
 {
-  size(1024, 512);
+ // size(1024, 512);
+    size(824, 512);
   background(0); //black
   buf = new byte[4096];
   buf_idx=0;
@@ -146,12 +158,14 @@ void setup()
   aud = new audio();
 
   config = new config_frame(this);
-  config.setSize(640,480);
-
-  formatter_date = new java.text.SimpleDateFormat( "yyyy-MM-dd" );
+ // config.setSize(640,480);
+  config.setSize(650,800);
+//  formatter_date = new java.text.SimpleDateFormat( "yyyy-MM-dd" );
+    formatter_date = new java.text.SimpleDateFormat( "MM-dd-H-m-s" );
   String ndate = formatter_date.format(new java.util.Date() );
 
-  log_filename = LOGFILE+"-"+ndate+".csv";
+ // log_filename = LOGFILE+"-"+ndate+".csv";
+   log_filename = ndate+"-"+LOGFILE+".csv";
 
   try {
     JFileChooser chooser = new JFileChooser();
@@ -176,14 +190,14 @@ public Serial getSerial() {
 void draw()
 {
 
-  if( found_port==0 && serial_packet_count > 0) {
+ if( found_port==0 && serial_packet_count > 0) {
     found_port=1;
-    println("found port "+port_name);
+    println("found port "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    "+port_name); //print info in app window header
   }
   if( found_port==1 && port_to==0) {
     found_port=0;
     serial_packet_count=0;
-    println("port not responding "+port_name);
+    println("port not responding "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    Port not responding "+port_name);
   }
 
   if(port_to>0) port_to--;
@@ -197,7 +211,7 @@ void draw()
         if(port_idx>=ports.length) port_idx=0;
 
         port_name = ports[port_idx++];
-        println("trying port "+port_name);
+         println("trying port "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    Trying Port "+port_name);
 
 
         try {
@@ -244,15 +258,16 @@ void draw()
   
   if(aud.audio_active==0) {
    stroke(0,0,0);
-   fill(0,0,0);
-   rect(0,0,512,128); //blank to background
+//   fill(0,0,0);
+//   rect(0,0,512,128); //blank to background
   }
 
   if(mousePressed) {
-            int xoffset = 770;
-            int yoffset = -70;
+     //       int xoffset = 770;
+      //      int yoffset = -70;
     //rect(25,475,105,25);
-    if(mouseX>25+xoffset && mouseY>475+yoffset && mouseX < 130+xoffset && mouseY<500+yoffset) {
+ //   if(mouseX>25+xoffset && mouseY>475+yoffset && mouseX < 130+xoffset && mouseY<500+yoffset) {
+  if(mouseX>25 && mouseY>475 && mouseX < 130 && mouseY<500) {  
       if(button_press==0) {
         print("\r\nconfig button pressed"); 
         button_press=1;
@@ -260,18 +275,18 @@ void draw()
         config.setVisible(true);
       }
     }
-    else if(mouseX>891 && mouseY>490) {
+ //   else if(mouseX>891 && mouseY>490) {
       //lower right corner
-      do_draw_iq ^= 0x01;
+  //    do_draw_iq ^= 0x01;
 
-       stroke(0,0,0);
-       fill(0,0,0);
-       rect(0,256,512,256); //blank to background
+ //      stroke(0,0,0);
+//       fill(0,0,0);
+ //      rect(0,256,512,256); //blank to background
 
-    }
-    else { 
-      print("\r\nmousex %d, mousey %d", mouseX, mouseY); 
-    }
+ //   }
+ //   else { 
+ //     print("\r\nmousex %d, mousey %d", mouseX, mouseY); 
+ //   }
   }
   else {
    button_press=0;
@@ -372,7 +387,7 @@ void process_buffer(byte b) {
         break;
         case  3 :
           //text string from Eagle printf
-          print( new String(buf,0,buf_len) );
+   //       print( new String(buf,0,buf_len) );
           serial_packet_count++;
           port_to=150;
           did_draw_config=0;
@@ -390,7 +405,7 @@ void process_buffer(byte b) {
           port_to=150;
           
           if(did_draw_config==0 || draw_config_mod++%10==0) {
-            //draw config button
+   /*         //draw config button
             fill(col1);
             stroke(col1);
             int xoffset = 770;
@@ -409,7 +424,25 @@ void process_buffer(byte b) {
             stroke(255,255,255);
             text("VER "+app_ver, xoffset+150,yoffset+495);
             did_draw_config=1;
-          }
+          } */
+            fill(105,105,105);
+            stroke(105,105,105);
+            rect(25,475,105,25);
+            fill(0,0,0);
+            stroke(0,0,0);
+            textSize(25);
+            text("CONFIG",32,497);  
+            textSize(15);
+            
+         //   fill(0,0,0);
+         //   stroke(0,0,0);
+         //   rect(120,475,160,25);
+         //   fill(255,255,255);
+         //   stroke(255,255,255);
+         //   text("Mon Version "+app_ver, 150,495);
+            did_draw_config=1;
+          }        
+                    
         break;
         case  5 :
           try{
@@ -484,23 +517,30 @@ void draw_audio(byte[] b, int len) {
  for(int i=0;i<len/2;i++) {
    samples[i] = (short) bb.getShort();
    samples[i] /= 256;
-   if( samples[i]>128 ) samples[i]=128;
-   if( samples[i]<-128 ) samples[i]=-128;
+//   if( samples[i]>128 ) samples[i]=128;
+//   if( samples[i]<-128 ) samples[i]=-128;
+     if( samples[i]>128 ) samples[i]=64; //128
+     if( samples[i]<-128 ) samples[i]=-64; //-128
  }
  
 
  stroke(0,0,0);
  fill(0,0,0);
- rect(0,0,512,128); //blank to background
-
+// rect(0,0,512,128); //blank to background
+ rect(40,0,100,145); //blank to background
   fill(col_def_const);
   stroke(col_def_const);
   
  
   //draw the audio
- int step=2;
- for(int i=0;i<len/2;i++) {
-   if(i>0) line(i*step,64+samples[i-1], (i*step+1), 64+samples[i]);
+// int step=2;
+  int step=1; //was 2
+// for(int i=0;i<len/2;i++) {
+//   if(i>0) line(i*step,64+samples[i-1], (i*step+1), 64+samples[i]);
+   for(int i=50;i<len/4;i++) { //i was 0 and len/2
+   if(i>0) line(i*step,64+samples[i-1], (i*step+1), 64+samples[i]); 
+   
+   
  }
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -520,7 +560,8 @@ void draw_constellation(byte[] b, int len) {
 
  stroke(0,0,0);
  fill(0,0,0);
- rect(0,128,512,128); //blank to background
+// rect(0,128,512,128); //blank to background
+  rect(160,0,100,128); //blank to background
 
  stroke(col_def_const);
  fill(col_def_const);
@@ -530,7 +571,9 @@ void draw_constellation(byte[] b, int len) {
   for(int i=0;i<len/8;i++) {
     float xx = samples[idx++]/512.0f;
     float yy = samples[idx++]/512.0f;
-    circle(150+xx,192+yy,1);
+  //  circle(150+xx,192+yy,1);
+     point(210+xx,65+yy); // trying points 
+    
   }
  
 }
@@ -564,7 +607,7 @@ void draw_iq(byte[] b, int len) {
      iq_samples[i] = (iq_samples[i]/max)*12000.0f;
    }
  } 
-
+/*
  stroke(0,0,0);
  fill(0,0,0);
  rect(0,256,512,256); //blank to background
@@ -600,7 +643,7 @@ void draw_iq(byte[] b, int len) {
     float ii2 = iq_samples[idx++]/256.0f;
     float qq2 = iq_samples[idx++]/256.0f;
     if(i>0) line(320+ii1, 192+qq1, 320+ii2, 192+qq2);
-  }
+  } */
 }
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -882,17 +925,23 @@ void handle_metainfo(byte[] b, int len) {
 
       //Line 1
     if (follow >0) { fill(0,0,0); //color
-         rect(520, 0, 512, 50); // erase
+     //    rect(520, 0, 512, 50); // erase
+          rect(320, 0, 512, 50); // erase
          fill(col1);
-         text("HOLDING ON TG "+follow,550,40);
+        // text("HOLDING ON TG "+follow,550,40);
+          text("HOLDING ON TG "+follow,350,40);
      }
     else if (wio_line1_str.trim() != "" || wio_line2_str.trim() != "") 
     { textSize(20);
       fill(0,0,0);
-      rect(520, 0, 512, 50); // erase
+   //   rect(520, 0, 512, 50); // erase
+       rect(320, 0, 512, 50); // erase
       fill(col1);
-      text(wio_line1_str.trim(), 550, 20);
-      text(wio_line2_str.trim(), 550, 40);
+  //    text(wio_line1_str.trim(), 550, 20);
+  //    text(wio_line2_str.trim(), 550, 40);
+      text(wio_line1_str.trim(), 350, 20);
+      text(wio_line2_str.trim(), 350, 40); 
+      
       fill(0,0,0);
        textSize(30);
       if(wio_line2_str!="") {
@@ -904,34 +953,45 @@ void handle_metainfo(byte[] b, int len) {
     }
     else if (wio_line1_str.trim() == "" || wio_line2_str.trim() == "") 
     { fill(0,0,0);
-     rect(520, 0, 512, 50); // erase
+  //   rect(520, 0, 512, 50); // erase
+       rect(320, 0, 512, 50); // erase
      fill(col1);
-     text(sysname_str.trim()+" / "+site_name_str.trim(),550,40);
+    // text(sysname_str.trim()+" / "+site_name_str.trim(),550,40);
+       text(sysname_str.trim()+" / "+site_name_str.trim(),350,40);
    }
    
     //Line2
    fill(0,0,0); //color
-    rect(520, 50, 512, 50); // erase
+   // rect(520, 50, 512, 50); // erase
+     rect(320, 50, 512, 50); // erase
     if (tg_s >0) { fill(col2); // color
-       text(tg_s +"  "+desc_str.trim(),550,90);
-       TG_active = (loc_str.trim()+"    "+tg_s); }
-       
+     //  text(tg_s +"  "+desc_str.trim(),550,90);
+         text(tg_s +"  "+desc_str.trim(),350,90);
+     //    TG_active = (loc_str.trim()+"    "+tg_s); }
+      TG_active = (loc_str.trim());
+      if (TG_active.length() > 20) { TG_active = (TG_active.substring(0,20)+"    "+tg_s); }
+      else TG_active = (loc_str.trim()+"    "+tg_s); }
     //Line3
     fill(0,0,0); //color
-    rect(520, 100, 512, 50); // erase
-    fill(col3);
-    text(loc_str.trim(),550,140);
+   // rect(520, 100, 512, 50); // erase
+      rect(320, 100, 512, 50); // erase
+     fill(col3);
+   // text(loc_str.trim(),550,140);
+     text(loc_str.trim(),350,140);
 
     //Line4
     fill(0,0,0); //color
-    rect(520, 150, 512, 50); // erase
+  //  rect(520, 150, 512, 50); // erase
+      rect(320, 150, 512, 50); // erase
     fill(col4);
     textSize(20);
-    text(hex(wacn_id,5)+"-"+hex(sys_id,3)+"-"+hex(p25_sys_nac,3)+"  RSSI "+int(rssi_f)+" dBm ",550,190);
-
+  //  text(hex(wacn_id,5)+"-"+hex(sys_id,3)+"-"+hex(p25_sys_nac,3)+"  RSSI "+int(rssi_f)+" dBm ",550,190);
+      text(hex(wacn_id,5)+"-"+hex(sys_id,3)+"-"+hex(p25_sys_nac,3)+"  RSSI "+int(rssi_f)+" dBm ",350,190);
+      
     //Line5
     fill(0,0,0); //color
-    rect(520, 200, 512, 50); // erase
+ //  rect(520, 200, 512, 50); // erase
+     rect(320, 200, 512, 50); // erase
     fill(col5);
     textSize(20);
     if (demod == 0) dmod = "LSM";
@@ -939,64 +999,137 @@ void handle_metainfo(byte[] b, int len) {
     if (demod == 2) dmod = "FMNB";
     if (demod == 3) dmod = "AM";
     if (demod == 4) dmod = "AM+AGC";
-    text("SITE "+site_id+", RFSS "+rfss_id+" DEMOD "+dmod,550,240);
+//  text("SITE "+site_id+", RFSS "+rfss_id+" DEMOD "+dmod,550,240);
+    text("SITE "+site_id+", RFSS "+rfss_id+" DEMOD "+dmod,350,240);
 
     //Line6
     fill(0,0,0); //color
-    rect(520, 250, 512, 50); // erase
+  //  rect(520, 250, 512, 50); // erase
+     rect(320, 250, 512, 50); // erase
+    
     fill(col6);
     textSize(20);
     String eevm = String.format("%2.1f",evm_p);
     String eerate = String.format("%2.4f",erate);
-    text("EVM "+eevm+"  ERATE "+eerate,550,290);
-      if (on_control_b !=0 && decoder<=1) text("TSBK/SEC "+tsbk_sec,750,290); //p25 and dmr
-      
+//    text("EVM "+eevm+"  ERATE "+eerate,550,290);
+//      if (on_control_b !=0 && decoder<=1) text("TSBK/SEC "+tsbk_sec,750,290); //p25 and dmr
+  text("EVM "+eevm+"  ERATE "+eerate,350,290);
+  if (on_control_b !=0) { fill(255,255,0); text("TSBK/SEC "+tsbk_sec,550,290);} // display yellow text (255,255,0) on control ch      
+
     //Line7
     fill(0,0,0); //color
-    rect(520, 300, 512, 50); // erase
+ //   rect(520, 300, 512, 50); // erase
+      rect(320, 300, 512, 50); // erase    
     fill(col7);
     textSize(25);
     String cc_mhz = String.format("%3.5f", center_freq_mhz);
-    text("FREQ: "+cc_mhz+" MHz",550,340); 
-
+  //  text("FREQ: "+cc_mhz+" MHz",550,340); 
+  if (on_control_b !=0) { fill(255,255,0); text("CCH "+cc_mhz+" MHz",350,340); } // display yellow text (255,255,0)on control ch
+      else text("TCH "+cc_mhz+" MHz",350,340); 
 
     fill(0,0,0); //color
-    rect(720, 450, 512, 50); // erase
+    rect(320, 450, 512, 50); // erase
     fill(col7);
     textSize(25);
-    text("GAINS: L "+lna_gain+" M "+mixer_gain+" V "+vga_gain,750,490); 
+    text("GAINS: L "+lna_gain+" M "+mixer_gain+" V "+vga_gain,350,490); 
 
     if(decoder==0 && demod < 2) { //P25
-      if (phase2 >0)  {fill(col_def_indicator); text("P2",850,340); fill(col7);}
-      if (phase2 ==0) {fill(col_def_indicator); text("P1",850,340); fill(col7);}
+    //  if (phase2 >0)  {fill(col_def_indicator); text("P2",850,340); fill(col7);}
+     // if (phase2 ==0) {fill(col_def_indicator); text("P1",850,340); fill(col7);}
+      if (phase2 >0)  {fill(col_def_indicator); text("P2",650,340); fill(col7);}
+      if (phase2 ==0) {fill(col_def_indicator); text("P1",650,340); fill(col7);}
     }
     else if(decoder==1) { //DMR
       fill(col_def_indicator); 
-      text("DMR",850,340); 
+     // text("DMR",850,340); 
+       text("DMR",650,340); 
       fill(col7);
     }
     else if(decoder==2) { //ACA
       fill(col_def_indicator); 
-      text("ACA",850,340); 
+    //  text("ACA",850,340); 
+      text("ACA",650,340);
       fill(col7);
     }
     else if(decoder==3) { //PGR
       fill(col_def_indicator); 
-      text("PGR",850,340); 
+    //  text("PGR",850,340); 
+       text("PGR",650,340); 
       fill(col7);
     }
 
     //Line8
     fill(0,0,0); //color
-    rect(520, 350, 512, 50); // erase
+ //  rect(520, 350, 512, 50); // erase
+    rect(320, 350, 512, 50); // erase
     fill(col8);
-    textSize(25);
+   // textSize(25);
+     textSize(40);
     if (RID >0 ) {
-    text("RID: "+RID+" , "+alias_str.trim(),550,390); };
+   // text("RID: "+RID+" , "+alias_str.trim(),550,390); };
+      text(alias_str.trim()+" "+RID,350,390); };
 
     //Line9
-    if (showTG_history == 1) {
+ if (showTG_history == 1) {
       if (TG_old != TG_active) {
+  
+         if (tg_s == 0) {    
+        
+        //   fill(0,0,0); //color
+        //   rect(320, 400, 512, 50); // erase
+           fill(col5); // col5 matches Wio TG history
+           textSize(20);
+              TG16 = TG15;
+              TG15 = TG14;
+              TG14 = TG13;
+              TG13 = TG12;
+              TG12 = TG11;
+              TG11 = TG10;
+              TG10 = TG9;
+              TG9 = TG8;
+              TG8 = TG7;
+              TG7 = TG6; 
+              TG6 = TG5;
+              TG5 = TG4;
+              TG4 = TG3;
+              TG3 = TG2;
+              TG2 = TG1; 
+        //  text(TG_active, 50,280);  
+         //  text(TG2,50,300);
+     
+    //Line10
+           fill(0,0,0); //color
+           rect(320, 440, 512, 70); // erase
+           rect(10, 140, 310, 330); // erase
+           fill(col5); // col5 matches Wio TG history
+           textSize(20); 
+           text(TG_active, 30,160);
+           text(TG2,30,180);
+           text(TG3, 30,200);
+           text(TG4,30,220);
+           text(TG5, 30, 240);
+           text(TG6, 30, 260);
+           text(TG7, 30,280);
+           text(TG8,30,300);
+           text(TG9, 30, 320);
+           text(TG10, 30, 340);
+           text(TG11, 30, 360);
+           text(TG12, 30, 380);
+           text(TG13, 30, 400);
+           text(TG14, 30, 420);
+           text(TG15, 30, 440);
+           text(TG16, 30, 460);
+           TG1 = TG_active;
+           TG_old = TG_active;
+      
+           
+        }
+      }
+    } 
+  } 
+}        
+     /*   if (showTG_history == 1) {
+    if (TG_old != TG_active) {
   
          if (tg_s == 0) {    
         
@@ -1009,7 +1142,7 @@ void handle_metainfo(byte[] b, int len) {
               TG3 = TG2;
               TG2 = TG1; 
            text(TG_active, 550,420);  
-           text(TG2,550,440);
+           text(TG2,550,440); 
     
     //Line10
            fill(0,0,0); //color
@@ -1026,6 +1159,7 @@ void handle_metainfo(byte[] b, int len) {
     } 
   } 
 } 
+*/
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 color rgb565_to_color(short val) {

@@ -96,7 +96,7 @@ public class config_frame extends javax.swing.JFrame {
         savefile = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
-        setTitle("MicroP25RXMon");
+        setTitle("EagleMon");
 
         ta.setBackground(new java.awt.Color(0, 0, 0));
         ta.setColumns(20);
