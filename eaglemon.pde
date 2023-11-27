@@ -387,7 +387,7 @@ void process_buffer(byte b) {
         break;
         case  3 :
           //text string from Eagle printf
-   //       print( new String(buf,0,buf_len) );
+          print( new String(buf,0,buf_len) );
           serial_packet_count++;
           port_to=150;
           did_draw_config=0;
