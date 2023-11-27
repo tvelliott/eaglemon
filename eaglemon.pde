@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2022 tvelliott and goldmyne99
+//Copyright (c) 2022, 2023 tvelliott and goldmyne99
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-int app_ver = 20231107;
+int app_ver = 20231119;
 
 import processing.serial.*;
 import java.nio.*;
@@ -192,12 +192,12 @@ void draw()
 
  if( found_port==0 && serial_packet_count > 0) {
     found_port=1;
-    println("found port "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    "+port_name); //print info in app window header
+    println("found port "+port_name); surface.setTitle("EagleMon    AppVer "+app_ver+"    "+port_name); //print info in app window header
   }
   if( found_port==1 && port_to==0) {
     found_port=0;
     serial_packet_count=0;
-    println("port not responding "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    Port not responding "+port_name);
+    println("port not responding "+port_name); surface.setTitle("EagleMon    AppVer "+app_ver+"    Port not responding "+port_name);
   }
 
   if(port_to>0) port_to--;
@@ -211,7 +211,7 @@ void draw()
         if(port_idx>=ports.length) port_idx=0;
 
         port_name = ports[port_idx++];
-         println("trying port "+port_name); surface.setTitle("EagleMon    AppVer"+app_ver+"    Trying Port "+port_name);
+         println("trying port "+port_name); surface.setTitle("EagleMon    AppVer "+app_ver+"    Trying Port "+port_name);
 
 
         try {
@@ -559,11 +559,11 @@ void draw_constellation(byte[] b, int len) {
  
 
  stroke(0,0,0);
- fill(0,0,0);
+ fill(0,0,0); //000
 // rect(0,128,512,128); //blank to background
-  rect(160,0,100,128); //blank to background
+  rect(140,0,140,140); //blank to background
 
- stroke(col_def_const);
+ stroke(col_def_const); 
  fill(col_def_const);
 
   //draw the constellation
