@@ -380,8 +380,8 @@ void process_buffer(byte b) {
           udpsend.send(buf,buf_len);
         break;
         case  2 :
-          if(have_gpu>0) draw_audio(buf,buf_len);
           aud.play_audio(buf,buf_len, demod_mode);
+          if(have_gpu>0) draw_audio(buf,buf_len);
           serial_packet_count++;
           port_to=150;
         break;
