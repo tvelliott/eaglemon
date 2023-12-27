@@ -223,7 +223,7 @@ void draw()
         }
 
         try {
-          serial = new Serial(this, port_name, serial_baud_rate);
+          serial = new Serial(this, port_name, 1000000);
           port_to=150;
           found_port=0;
         } catch(Exception e) {
@@ -881,6 +881,7 @@ void handle_metainfo(byte[] b, int len) {
   bb3.get();
   bb3.get();
   bb3.get();
+  int hw_type = bb3.get();
 
   int crc32val = bb3.getInt();
 
@@ -889,6 +890,7 @@ void handle_metainfo(byte[] b, int len) {
 
   metamod++;
   if( do_meta_output==1 && ((metamod%128==0 && on_control_b==0) || (metamod%64==0 && on_control_b==1) ) ) {  //only print every 31 packets when on voice channel
+    print( String.format("\r\nhw_type: %d", hw_type) );
     print( String.format("\r\ncol_def_const: %02X", col_def_const) );
 
     //print("\r\nmeta len "+len);
