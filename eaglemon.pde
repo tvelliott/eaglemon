@@ -167,6 +167,7 @@ void setup()
 // log_filename = LOGFILE+"-"+ndate+".csv";
   log_filename = ndate + "-" + LOGFILE + ".csv";
 
+  /*
   try {
     JFileChooser chooser = new JFileChooser();
     File file = chooser.getCurrentDirectory();  //better for windows to do it this way
@@ -178,6 +179,7 @@ void setup()
   } catch( Exception e ) {
     e.printStackTrace();
   }
+  */
 
 }
 ///////////////////////////////////////////////////////////////////////////////////
